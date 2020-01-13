@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: thefarmerkit-backend
+  namespace: thehillogy-int
+spec:
+  tls:
+    - hosts:
+        - thefarmerkit-backend-int.kube.vged.es
+      secretName: kube-vged-es-tls
+  rules:
+    - host: thefarmerkit-backend-int.kube.vged.es
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: thefarmerkit-backend
+              servicePort: 8080

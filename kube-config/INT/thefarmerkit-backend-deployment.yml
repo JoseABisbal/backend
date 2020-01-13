@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: thefarmerkit-backend
+  namespace: thehillogy-int
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: thefarmerkit-backend
+    spec:
+      containers:
+        - name: thefarmerkit-backend
+          image: kubevged.azurecr.io/everis/thefarmerkit-backend:1.0-SNAPSHOT
+          imagePullPolicy: Always
+          #livenessProbe:
+          #  httpGet:
+          #    path: /thefarmerkit-backend/health
+          #    port: 8080
+          #    scheme: HTTP
+          #  initialDelaySeconds: 30
+      imagePullSecrets:
+        - name: registrykey

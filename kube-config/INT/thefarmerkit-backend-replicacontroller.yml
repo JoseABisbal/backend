@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: thefarmerkit-backend
+  namespace: thehillogy-int
+spec:
+  replicas: 1
+  selector:
+    app: thefarmerkit-backend
+  template:
+    metadata:
+      labels:
+        app: thefarmerkit-backend
+    spec:
+      containers:
+        - name: thefarmerkit-backend
+          image: kubevged.azurecr.io/everis/thefarmerkit-backend:1.0-SNAPSHOT
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: thefarmerkit-backend-sec-vol
+              mountPath: /etc/secrets/thefarmerkit-backend-sec
+      volumes:
+        - name: thefarmerkit-backend-sec-vol
+          secret:
+            secretName: thefarmerkit-backend-sec
+      #        livenessProbe:
+      #          httpGet:
+      #            path: /thefarmerkit-backend/health
+      #            port: 8080
+      #            scheme: HTTP
+      #          initialDelaySeconds: 30
+      imagePullSecrets:
+        - name: registrykey
